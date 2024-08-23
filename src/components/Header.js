@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { auth } from "../utils/firebase";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addUser, removeUser } from "../utils/userSlice";
+import { USER_AVATAR } from "../utils/constants";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const isUserSignedIn = useSelector((store) => store.user);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        console.log("user in dispatch--->", user);
+        const { uid, email, displayName } = user;
+        dispatch(addUser({ uid, email, displayName }));
+        navigate("/browse");
+      } else {
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+
+    return () => {
+      // for unsubsrcibing when component unmounts
+      unsubscribe();
+    };
+  }, []);
 
   function handleSignOut() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         console.log("Sign out completed");
-        navigate("/");
       })
       .catch((error) => {
         console.log("error in signing out user");
@@ -28,7 +50,7 @@ const Header = () => {
         <div className="flex items-center">
           <img
             className="w-12 h-12 m-2 p-2"
-            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+            src={USER_AVATAR}
             alt="signout-icon"
           />
           <button className="font-bold text-white" onClick={handleSignOut}>

@@ -1,15 +1,43 @@
 import React from "react";
+import { auth } from "../utils/firebase";
+import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const isUserSignedIn = useSelector((store) => store.user);
+
+  function handleSignOut() {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("Sign out completed");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log("error in signing out user");
+      });
+  }
+
   return (
-    <div className="absolute py-2 px-5 bg-gradient-to-b from-black z-10">
+    <div className="absolute w-full py-2 px-5 bg-gradient-to-b from-black z-10 flex justify-between">
       <img className="w-36 m-2" src="/Netflix_Logo_CMYK.png" alt="logo" />
+      {isUserSignedIn && (
+        <div className="flex items-center">
+          <img
+            className="w-12 h-12 m-2 p-2"
+            src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
+            alt="signout-icon"
+          />
+          <button className="font-bold text-white" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Header;
-
-/*
-https://assets.nflxext.com/ffe/siteui/vlv3/b58c77e5-b2f6-4eaf-8352-fe8236c9d3f0/3e4e726c-ed2a-472c-94fa-b6c8880b7da2/US-en-20240820-TRIFECTA_GLOBAL_FALLBACK-perspective_WEB_2e8a07bd-505c-4bc0-9503-81884f6b5bcb_large.jpg
-*/

@@ -16,7 +16,6 @@ const Header = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         // User is signed in
-        console.log("user in dispatch--->", user);
         const { uid, email, displayName } = user;
         dispatch(addUser({ uid, email, displayName }));
         navigate("/browse");

@@ -7,7 +7,7 @@ const MainContainer = () => {
   //early return --> before store is initialized with  movies
   if (movies === null) return;
 
-  const mainMovie = movies[0];
+  const mainMovie = movies[1];
 
   const { original_title, overview, id } = mainMovie;
 

@@ -20,7 +20,6 @@ const useMovieTrailer = (movieId) => {
       (vid) => vid.type === "Trailer"
     );
     const trailer = FilteredTrailer || json.results[0];
-    console.log("trailer==>", trailer);
     dispatch(addTrailerVideo(trailer));
   }
 };

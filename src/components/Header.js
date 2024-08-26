@@ -7,6 +7,7 @@ import { addUser, removeUser } from "../utils/userSlice";
 import { SUPPORTED_LANGUAGES, USER_AVATAR } from "../utils/constants";
 import { toggleGptSearchView } from "../utils/gptSlice";
 import { changeLanguage } from "../utils/configSlice";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -54,8 +55,12 @@ const Header = () => {
   }
 
   return (
-    <div className="absolute w-full py-2 px-5 bg-gradient-to-b from-black z-10 flex justify-between">
-      <img className="w-36 m-2" src="/Netflix_Logo_CMYK.png" alt="logo" />
+    <div className="absolute w-full py-2 px-5 bg-gradient-to-b from-black z-10 flex flex-col justify-between md:flex-row">
+      <img
+        className="w-36 md:m-2 mx-auto"
+        src="/Netflix_Logo_CMYK.png"
+        alt="logo"
+      />
       {isUserSignedIn && (
         <div className="flex items-center">
           {isGptVisible && (

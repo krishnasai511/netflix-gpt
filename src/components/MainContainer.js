@@ -7,7 +7,7 @@ const MainContainer = () => {
   //early return --> before store is initialized with  movies
   if (movies === null) return;
 
-  const mainMovie = movies[1];
+  const mainMovie = movies[Math.floor(Math.random() * movies?.length)];
 
   const { original_title, overview, id } = mainMovie;
 
